@@ -792,7 +792,8 @@ app.add_middleware(PipelineMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ALLOW_ORIGIN,
+    # allow_origins=CORS_ALLOW_ORIGIN,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -2337,13 +2338,13 @@ async def get_manifest_json():
             {
                 "src": "/static/logo.png",
                 "type": "image/png",
-                "sizes": "500x500",
+                "sizes": "512x512",
                 "purpose": "any",
             },
             {
                 "src": "/static/logo.png",
                 "type": "image/png",
-                "sizes": "500x500",
+                "sizes": "512x512",
                 "purpose": "maskable",
             },
         ],

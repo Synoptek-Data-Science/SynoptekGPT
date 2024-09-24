@@ -1,35 +1,34 @@
-name: synoptek-gpt
-
 services:
   ollama:
     volumes:
       - ollama:/root/.ollama
-    ports:
-      - "11434:11434"
     container_name: ollama
     pull_policy: always
     tty: true
-    restart: always
+    restart: unless-stopped
     image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
-  synoptek_gpt:
+
+  open-webui:
     build:
       context: .
       args:
         OLLAMA_BASE_URL: '/ollama'
       dockerfile: Dockerfile
-    container_name: synoptek_gpt
+    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    container_name: open-webui
     volumes:
-      - synoptek_gpt:/app/backend/data
+      - open-webui:/app/backend/data
     depends_on:
       - ollama
     ports:
-      - ${OPEN_WEBUI_PORT-8080}:8080
+      - ${OPEN_WEBUI_PORT-3000}:8080
     environment:
       - 'OLLAMA_BASE_URL=http://ollama:11434'
       - 'WEBUI_SECRET_KEY='
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
+
 volumes:
-  synoptek_gpt: {}
   ollama: {}
+  open-webui: {}
